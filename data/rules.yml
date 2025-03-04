@@ -1,0 +1,22 @@
+version: "3.1"
+
+rules:
+- rule: Fallback triggers LLaMA response once
+  condition:
+    - slot_was_set:
+        - waiting_message_sent: false
+  steps:
+    - intent: nlu_fallback
+    - action: action_llama_response
+    - slot_was_set:
+        - waiting_message_sent: true
+- rule: Reset waiting_message_sent after response
+  steps:
+    - action: action_llama_response
+    - slot_was_set:
+        - waiting_message_sent: true
+    - slot_was_set:
+        - waiting_message_sent: false
+
+
+

@@ -1,0 +1,13 @@
+version: "3.1"
+
+language: "en"
+
+pipeline:
+- name: "FallbackClassifier"
+  threshold: 0.01    # Ensures every message triggers fallback
+
+policies:
+- name: RulePolicy
+  core_fallback_action_name: "action_llama_response"    # Force custom action
+  enable_fallback_prediction: true
+assistant_id: 20250303-152106-chamfered-judo

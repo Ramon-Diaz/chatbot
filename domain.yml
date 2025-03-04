@@ -1,0 +1,24 @@
+version: "3.1"
+
+intents:
+  - fallback_intent  # Custom fallback intent
+
+actions:
+  - action_llama_response  # Ensure it's recognized
+
+slots:
+  waiting_message_sent:
+    type: bool
+    initial_value: false
+    influence_conversation: false
+    mappings:
+      - type: custom
+
+
+  response_count:
+    type: any
+    initial_value: 0
+    mappings:
+      - type: custom
+
+
