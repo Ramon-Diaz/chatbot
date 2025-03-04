@@ -12,7 +12,7 @@ const Chatbot = () => {
     setInput("");
 
     try {
-      const response = await fetch("https://chat.ramon-services.com/webhooks/rest/webhook", {
+      const response = await fetch("https://chat.ramon-services.com/rasa", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ sender: "test_user", message: input }),
