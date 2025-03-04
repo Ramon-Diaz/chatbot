@@ -22,7 +22,19 @@ class ActionLlamaResponse(Action):
                 timeout=10
             )
             if response.status_code == 200:
-                llama_response = response.json().get("response", "")
+                response_data = response.json()
+
+                # Extract only the assistant's response
+                if "response" in response_data and isinstance(response_data["response"], list):
+                    # Find the assistant's message
+                    assistant_message = next(
+                        (msg["content"] for msg in response_data["response"] if msg["role"] == "assistant"),
+                        "Sorry, I couldn't generate a response."
+                    )
+                    llama_response = assistant_message
+                else:
+                    llama_response = "Sorry, I couldn't generate a response."
+
                 dispatcher.utter_message(text=llama_response)
 
         except requests.exceptions.RequestException:
