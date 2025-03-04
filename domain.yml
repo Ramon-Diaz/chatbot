@@ -14,11 +14,16 @@ slots:
     mappings:
       - type: custom
 
-
   response_count:
     type: any
     initial_value: 0
     mappings:
       - type: custom
 
+  chat_history:
+    type: list
+    initial_value: []
+    influence_conversation: false
+    mappings:
+      - type: custom  # Ensure chat_history can be dynamically updated
 

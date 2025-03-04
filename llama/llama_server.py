@@ -29,22 +29,33 @@ pipe = pipeline(
 
 # Define the request body structure
 class PromptRequest(BaseModel):
-    prompt: str
+    prompt: list
 
 @app.post("/generate")
 async def generate_text(request: PromptRequest):
-    # Structure the input as a conversation
-    messages = [
-        {"role": "system", "content": "You are a helpful AI assistant. Keep responses concise and accurate."},
-        {"role": "user", "content": request.prompt},
+    messages = request.prompt  # Expecting full conversation history from Rasa
+
+    # Use the chat-style input format recommended for LLaMA
+    formatted_prompt = [
+        {"role": "system", "content": "You are a helpful AI assistant. Keep responses concise and accurate."}
     ]
+    formatted_prompt.extend(messages)
 
     # Generate text using the pipeline
-    outputs = pipe(messages, max_new_tokens=100)
+    outputs = pipe(formatted_prompt, max_new_tokens=150)
 
-    # Extract the response from the pipeline output
+    # Extract only the assistant's response
     generated_text = outputs[0]["generated_text"]
 
+    # Append only the assistant's response to chat history
+    messages.append({"role": "assistant", "content": generated_text})
+
+    # Return only the assistant's latest response
     return {"response": generated_text}
+
+
+
+
+
 
 
